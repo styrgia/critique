@@ -24,12 +24,18 @@ async function getWeeklyDownloads(packageName) {
     }
 }
 
+async function getPackageSize() {
+
+}
+
 async function analyzePackage(packageName, currentVersion) {
     const packageInfo = await getPackageInfo(packageName);
 
     const latestVersion = packageInfo['dist-tags'].latest;
 
     const weeklyInstalls = await getWeeklyDownloads(packageName);
+
+
 
     const sameVersion = currentVersion === latestVersion;
 
