@@ -1,0 +1,4 @@
+ignores: ["eslint-*", "*-loader"]
+skip-missing: true
+ignore-path: .gitignore
+ignore-bin-package: true

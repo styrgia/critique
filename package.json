@@ -1,0 +1,42 @@
+{
+  "name": "frontend-audit",
+  "version": "1.0.0",
+  "description": "",
+  "config": {
+    "site": "http://localhost:3000",
+    "project": ""
+  },
+  "scripts": {
+    "check:unused-deps": "depcheck $npm_package_config_project --config .depcheckrc",
+    "check:problem-deps": "node scripts/analyze-dependencies.mjs",
+    "check:large-files": "node scripts/check-large-files.mjs",
+    "check:copy-paste": "jscpd $npm_package_config_project --config .jscpd.json",
+    "check:force-reflow": "node scripts/find-force-reflow.mjs",
+    "ts-coverage": "typescript-coverage-report --strict --project $npm_package_config_project",
+    "cruiser:pretty": "depcruise src --output-type dot | dot -T svg -Grankdir=TD | tee dependency-graph.svg | depcruise-wrap-stream-in-html > ./docs.html",
+    "cruiser:metrics": "depcruise . --metrics --output-type metrics > ./metrics.log",
+    "unlighthouse": "unlighthouse --config-file ./unlighthouse.config.js",
+    "axe": "axe $npm_package_config_site"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@axe-core/cli": "^4.10.0",
+    "axios": "^1.7.7",
+    "chalk": "^5.3.0",
+    "css": "^3.0.0",
+    "dayjs": "^1.11.13",
+    "depcheck": "^1.4.7",
+    "dependency-cruiser": "^16.4.2",
+    "jscpd": "^4.0.5",
+    "sass": "^1.79.4",
+    "table": "^6.8.2",
+    "typescript-coverage-report": "^1.0.0",
+    "unlighthouse": "^0.13.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/node": "^22.7.5"
+  }
+}

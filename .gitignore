@@ -1,0 +1,11 @@
+.idea
+node_modules
+report
+coverage-ts
+dependency-graph.svg
+docs.html
+.unlighthouse
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
