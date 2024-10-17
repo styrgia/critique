@@ -63,7 +63,7 @@ async function findDuplicateRequests(url) {
     }
 }
 
-const url = process.argv[2] || 'http://localhost:3000';
+const url = process.argv[2] || 'http://localhost:3000/';
 
 findDuplicateRequests(url).catch(error => {
     console.error('Ошибка:', error);
