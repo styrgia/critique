@@ -59,7 +59,7 @@ function analyzeCSS(cssContent, filePath) {
                 if (isHeavySelector(selector)) {
                     heavySelectors.push({
                         selector,
-                        file: filePath
+                        file: filePath,
                     });
                 }
             });
@@ -74,7 +74,10 @@ function compileSass(filePath) {
         const result = sass.compile(filePath, { sourceMap: false });
         return result.css.toString();
     } catch (error) {
-        if (!error.message.indexOf('Undefined variable') && !error.message.indexOf('Undefined mixin')) {
+        if (
+            !error.message.indexOf('Undefined variable') &&
+            !error.message.indexOf('Undefined mixin')
+        ) {
             console.error(`Ошибка компиляции SASS файла: ${filePath}`, error);
         }
         return '';

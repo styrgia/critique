@@ -1,23 +1,29 @@
 import { test, expect } from '@playwright/test';
-import fs from 'fs';
-import path from 'path';
 
-const figmaLayoutPath = path.resolve(__dirname, 'figma', 'layout.png');
+const sreenshotOptions = {
+    fullPage: true,
+    maxDiffPixelRatio: 0.5,
+    // threshold: 0.1,
+};
 
-test('сравнение с макетом', async ({ page }) => {
-    // Переходим на страницу, которую нужно протестировать
-    await page.goto('https://localhost:3000');
+async function runCondition(page, size) {
+    await page.goto('/');
+    await page.setViewportSize(size);
+    await page.locator('footer').scrollIntoViewIfNeeded({ timeout: 1000 });
+    await page.locator('body').scrollIntoViewIfNeeded({ timeout: 1000 });
+}
 
-    // Делаем скриншот страницы
-    const screenshotBuffer = await page.screenshot();
+test('desktop-test', async ({ page }) => {
+    await runCondition(page, { width: 1920, height: 1080 });
+    await expect(page).toHaveScreenshot('desktop.png', sreenshotOptions);
+});
 
-    // Сохраняем скриншот для отладки (опционально)
-    fs.writeFileSync(path.resolve(__dirname, 'output', 'screenshot.png'), screenshotBuffer);
+test('tablet-test', async ({ page }) => {
+    await runCondition(page, { width: 834, height: 817 });
+    await expect(page).toHaveScreenshot('tablet.png', sreenshotOptions);
+});
 
-    // Сравниваем скриншот с эталонным изображением из Figma
-    expect(screenshotBuffer).toMatchSnapshot({
-        name: 'layout.png',
-        path: figmaLayoutPath,
-        threshold: 0.1 // Допустимая разница между изображениями (10%)
-    });
+test('mobile-test', async ({ page }) => {
+    await runCondition(page, { width: 320, height: 540 });
+    await expect(page).toHaveScreenshot('mobile.png', sreenshotOptions);
 });

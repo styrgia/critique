@@ -16,7 +16,9 @@
     "cruiser:pretty": "depcruise src --output-type dot | dot -T svg -Grankdir=TD | tee dependency-graph.svg | depcruise-wrap-stream-in-html > ./docs.html",
     "cruiser:metrics": "depcruise . --metrics --output-type metrics > ./metrics.log",
     "unlighthouse": "unlighthouse --config-file ./unlighthouse.config.js",
-    "axe": "axe $npm_package_config_site"
+    "axe": "axe $npm_package_config_site",
+    "e2e": "playwright test",
+    "find-deadcode": "ts-prune -i \\.next"
   },
   "keywords": [],
   "author": "",
@@ -30,8 +32,10 @@
     "depcheck": "^1.4.7",
     "dependency-cruiser": "^16.4.2",
     "jscpd": "^4.0.5",
+    "prettier": "^3.3.3",
     "sass": "^1.79.4",
     "table": "^6.8.2",
+    "ts-prune": "^0.10.3",
     "typescript-coverage-report": "^1.0.0",
     "unlighthouse": "^0.13.5"
   },

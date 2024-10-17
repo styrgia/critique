@@ -3,10 +3,12 @@
   "maxLines": 500,
   "maxSize": "1mb",
   "minTokens": 50,
-  "ignore": [ "node_modules" ],
+  "ignore": [ "**/node_modules/**", "**/.next/**" ],
+  "absolute": true,
   "mode": "mild",
   "ignoreCase": false,
   "gitignore": true,
   "silent": false,
   "reporters": ["html"]
 }
+

@@ -2,7 +2,11 @@ import axios from 'axios';
 import { table } from 'table';
 import fs from 'fs';
 import chalk from 'chalk';
-import packageJson from './package.json' assert { type: 'json' };
+import path from 'path';
+import { getHumanFileSize } from './utils/get-human-size.mjs';
+
+const packageJsonPath = path.resolve(process.cwd(), 'package.json');
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
 async function getPackageInfo(packageName) {
     try {
@@ -11,6 +15,19 @@ async function getPackageInfo(packageName) {
         return response.data;
     } catch (error) {
         console.error(`Ошибка при получении данных для пакета ${packageName}:`, error.message);
+    }
+}
+
+async function getGzipSize(packageName, version) {
+    try {
+        const url = `https://bundlephobia.com/api/size?package=${packageName}@${version}`;
+        const response = await axios.get(url);
+        return response.data.gzip;
+    } catch (error) {
+        console.error(
+            `Ошибка при получении размера для пакета ${packageName}@${version}:`,
+            error.message
+        );
     }
 }
 
@@ -31,13 +48,18 @@ async function analyzePackage(packageName, currentVersion) {
 
     const weeklyInstalls = await getWeeklyDownloads(packageName);
 
+    const gzipSize = await getGzipSize(packageName, latestVersion);
+
     const sameVersion = currentVersion === latestVersion;
 
     return [
         chalk.greenBright(packageName),
-        chalk[sameVersion ? 'gray' : 'red'](`v${currentVersion}`),
-        chalk[sameVersion ? 'gray' : 'red'](`v${latestVersion}`),
-        chalk[weeklyInstalls < 40_000 ? 'red' : 'bold'](weeklyInstalls ? `${new Intl.NumberFormat().format(weeklyInstalls)}` : 'N/A'),
+        chalk[sameVersion ? 'white' : 'red'](`v${currentVersion}`),
+        chalk[sameVersion ? 'white' : 'red'](`v${latestVersion}`),
+        chalk[weeklyInstalls < 40_000 ? 'red' : 'bold'](
+            weeklyInstalls ? `${new Intl.NumberFormat().format(weeklyInstalls)}` : 'N/A'
+        ),
+        gzipSize ? `${getHumanFileSize(gzipSize)}` : 'N/A',
     ];
 }
 
@@ -48,6 +70,7 @@ async function analyzeDependencies(dependencies, type = 'dependencies') {
             chalk.bold('Current Version'),
             chalk.bold('Latest Version'),
             chalk.bold('Weekly Installs'),
+            chalk.bold('Gzipped Size'),
         ],
     ];
 
@@ -63,7 +86,7 @@ async function analyzeDependencies(dependencies, type = 'dependencies') {
 }
 
 async function main() {
-    if (!fs.existsSync('package.json')) {
+    if (!packageJson) {
         console.error('Файл package.json не существует');
         process.exit(1);
     }

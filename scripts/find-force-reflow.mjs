@@ -1,13 +1,23 @@
 import fs from 'fs';
 import path from 'path';
-import {table} from "table";
-import {excludeDirs} from "../utils/get-files.mjs";
+import { table } from 'table';
+import { excludeDirs } from './utils/get-files.mjs';
 
 const reflowTriggers = [
-    'offsetWidth', 'offsetHeight', 'offsetTop', 'offsetLeft',
-    'clientWidth', 'clientHeight', 'clientTop', 'clientLeft',
-    'scrollWidth', 'scrollHeight', 'scrollTop', 'scrollLeft',
-    'getComputedStyle', 'getBoundingClientRect'
+    'offsetWidth',
+    'offsetHeight',
+    'offsetTop',
+    'offsetLeft',
+    'clientWidth',
+    'clientHeight',
+    'clientTop',
+    'clientLeft',
+    'scrollWidth',
+    'scrollHeight',
+    'scrollTop',
+    'scrollLeft',
+    'getComputedStyle',
+    'getBoundingClientRect',
 ];
 
 function getFiles(dir, files = []) {
@@ -19,7 +29,10 @@ function getFiles(dir, files = []) {
 
         if (stats.isDirectory() && !excludeDirs.includes(item)) {
             getFiles(fullPath, files);
-        } else if (stats.isFile() && (['js', 'jsx', 'ts', 'tsx'].some(ext => fullPath.endsWith('.' + ext)))) {
+        } else if (
+            stats.isFile() &&
+            ['js', 'jsx', 'ts', 'tsx'].some(ext => fullPath.endsWith('.' + ext))
+        ) {
             files.push(fullPath);
         }
     });
@@ -39,7 +52,7 @@ function findReflowTriggersInFile(filePath) {
                 matches.push({
                     file: filePath,
                     line: index + 1,
-                    trigger
+                    trigger,
                 });
             }
         });
@@ -48,7 +61,6 @@ function findReflowTriggersInFile(filePath) {
     return matches;
 }
 
-// Основная функция для анализа всех файлов проекта
 function analyzeProject(directory) {
     const files = getFiles(directory);
     let foundIssues = [];
@@ -56,7 +68,7 @@ function analyzeProject(directory) {
     files.forEach(file => {
         const matches = findReflowTriggersInFile(file);
         if (matches.length > 0) {
-            foundIssues = foundIssues.concat(matches)
+            foundIssues = foundIssues.concat(matches);
         }
     });
 
@@ -64,7 +76,7 @@ function analyzeProject(directory) {
 }
 
 function main() {
-    const directory = process.argv[2] || '.'; // Указание директории для сканирования (по умолчанию текущая)
+    const directory = process.argv[2] || '.';
 
     if (!fs.existsSync(directory)) {
         console.error('Указанная директория не существует.');
