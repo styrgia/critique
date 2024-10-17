@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 import { table } from 'table';
 
-async function analyzeNetworkWaterfall(url) {
+async function findDuplicateRequests(url) {
     const browser = await chromium.launch({ headless: true });
     const page = await browser.newPage();
 
@@ -65,6 +65,6 @@ async function analyzeNetworkWaterfall(url) {
 
 const url = process.argv[2] || 'http://localhost:3000';
 
-analyzeNetworkWaterfall(url).catch(error => {
+findDuplicateRequests(url).catch(error => {
     console.error('Ошибка:', error);
 });
