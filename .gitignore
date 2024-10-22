@@ -10,3 +10,4 @@ docs.html
 /blob-report/
 /playwright/.cache/
 .DS_Store
+stats.json

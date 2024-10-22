@@ -4,21 +4,26 @@
   "description": "",
   "config": {
     "site": "http://localhost:3000",
-    "project": ""
+    "project": "."
   },
   "scripts": {
-    "check:unused-deps": "depcheck $npm_package_config_project --config .depcheckrc",
-    "check:problem-deps": "node scripts/analyze-dependencies.mjs",
-    "check:large-files": "node scripts/check-large-files.mjs",
-    "check:copy-paste": "jscpd $npm_package_config_project --config .jscpd.json",
-    "check:force-reflow": "node scripts/find-force-reflow.mjs",
-    "ts-coverage": "typescript-coverage-report --strict --project $npm_package_config_project",
+    "q:unused-deps": "depcheck $npm_package_config_project --config .depcheckrc",
+    "q:deps-stats": "node scripts/analyze-dependencies.mjs",
+    "q:large-files": "node scripts/check-large-files.mjs",
+    "q:copy-paste": "jscpd $npm_package_config_project --config .jscpd.json",
+    "q:ts-coverage": "typescript-coverage-report --strict --project $npm_package_config_project",
+    "q:deadcode": "ts-prune -i \\.next",
+    "q:analyze-stats": "node scripts/quality/analyze-stats.mjs",
+    "q:axe": "axe $npm_package_config_site",
     "cruiser:pretty": "depcruise src --output-type dot | dot -T svg -Grankdir=TD | tee dependency-graph.svg | depcruise-wrap-stream-in-html > ./docs.html",
     "cruiser:metrics": "depcruise . --metrics --output-type metrics > ./metrics.log",
+    "perf:force-reflow": "node scripts/performance/find-force-reflow.mjs",
+    "perf:long-tasks": "node scripts/performance/analyze-long-tasks.mjs",
+    "perf:heavy-selectors": "node scripts/performance/find-heavy-selectors.mjs",
+    "perf:unused-resources": "node scripts/performance/find-unused-resources.mjs",
+    "perf:duplicate-reqs": "node scripts/performance/find-unused-resources.mjs",
     "unlighthouse": "unlighthouse --config-file ./unlighthouse.config.js",
-    "axe": "axe $npm_package_config_site",
-    "e2e": "playwright test",
-    "find-deadcode": "ts-prune -i \\.next"
+    "e2e": "playwright test"
   },
   "keywords": [],
   "author": "",
