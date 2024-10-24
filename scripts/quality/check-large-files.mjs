@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { table } from 'table';
-import { getFiles } from './utils/get-files.mjs';
-import { getHumanFileSize } from './utils/get-human-size.mjs';
+import { getFiles } from '../utils/get-files.mjs';
+import { getHumanFileSize } from '../utils/get-human-size.mjs';
 
 // 1 МБ
 const SIZE_LIMIT = 1 * 1024 * 1024;

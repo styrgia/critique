@@ -11,3 +11,6 @@ docs.html
 /playwright/.cache/
 .DS_Store
 stats.json
+metrics.log
+storage/
+leaks-report.json

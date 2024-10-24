@@ -79,7 +79,9 @@ function compileSass(filePath) {
             !error.message.indexOf('Undefined mixin')
         ) {
             console.error(`Ошибка компиляции SASS файла: ${filePath}`, error);
+            return '';
         }
+        console.error(error);
         return '';
     }
 }

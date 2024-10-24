@@ -1,9 +1,9 @@
 {
-  "name": "frontend-audit",
+  "name": "critique",
   "version": "1.0.0",
   "description": "",
   "config": {
-    "site": "http://localhost:3000",
+    "site": "http://localhost:3000/",
     "project": "."
   },
   "scripts": {
@@ -16,26 +16,33 @@
     "q:analyze-stats": "node scripts/quality/analyze-stats.mjs",
     "q:axe": "axe $npm_package_config_site",
     "cruiser:pretty": "depcruise src --output-type dot | dot -T svg -Grankdir=TD | tee dependency-graph.svg | depcruise-wrap-stream-in-html > ./docs.html",
-    "cruiser:metrics": "depcruise . --metrics --output-type metrics > ./metrics.log",
+    "cruiser:metrics": "depcruise $npm_package_config_project --metrics --output-type metrics > ./metrics.log",
     "perf:force-reflow": "node scripts/performance/find-force-reflow.mjs",
     "perf:long-tasks": "node scripts/performance/analyze-long-tasks.mjs",
     "perf:heavy-selectors": "node scripts/performance/find-heavy-selectors.mjs",
     "perf:unused-resources": "node scripts/performance/find-unused-resources.mjs",
     "perf:duplicate-reqs": "node scripts/performance/find-unused-resources.mjs",
     "unlighthouse": "unlighthouse --config-file ./unlighthouse.config.js",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "crawl": "node scripts/crawler.js",
+    "find-leaks": "fuite -o leaks-report.json"
   },
   "keywords": [],
-  "author": "",
+  "author": "Pavel Vorobiev",
   "license": "ISC",
   "dependencies": {
     "@axe-core/cli": "^4.10.0",
+    "@babel/parser": "^7.25.9",
+    "@babel/traverse": "^7.25.9",
     "axios": "^1.7.7",
     "chalk": "^5.3.0",
+    "crawlee": "^3.11.5",
     "css": "^3.0.0",
     "dayjs": "^1.11.13",
     "depcheck": "^1.4.7",
     "dependency-cruiser": "^16.4.2",
+    "fuite": "^5.0.2",
+    "glob": "^11.0.0",
     "jscpd": "^4.0.5",
     "prettier": "^3.3.3",
     "sass": "^1.79.4",

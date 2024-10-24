@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { table } from 'table';
-import { excludeDirs } from './utils/get-files.mjs';
+import { excludeDirs } from '../utils/get-files.mjs';
 
 const reflowTriggers = [
     'offsetWidth',
